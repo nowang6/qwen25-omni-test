@@ -1,0 +1,19 @@
+[project]
+name = "qwen25-omni-alert"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "accelerate>=1.15.0",
+    "numpy>=2.5.4",
+    "pillow>=13.0.0",
+    "pyyaml>=6.0.3",
+    "safetensors>=0.8.0",
+    "sentencepiece>=0.2.2",
+    "soundfile>=0.14.0",
+    "torch>=2.15.0",
+    "torchvision>=0.29.2",
+    "tqdm>=4.70.1",
+    "transformers>=5.22.1",
+]
