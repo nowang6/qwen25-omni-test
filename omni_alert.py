@@ -35,11 +35,15 @@ from pathlib import Path
 os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
 
 import torch
-from qwen_omni_utils import process_mm_info
-from transformers import Qwen2_5OmniForConditionalGeneration, Qwen2_5OmniProcessor
+
+import omni_compat
+
+omni_compat.patch_torchcodec()  # 本机 torchcodec 需要 LAZY 预加载垫片，见模块注释
+from qwen_omni_utils import process_mm_info  # noqa: E402
+from transformers import Qwen2_5OmniForConditionalGeneration, Qwen2_5OmniProcessor  # noqa: E402
 
 MODEL_PATH = "/data/models/Qwen2.5-Omni-3B"
-DEFAULT_VIDEO_DIR = Path(__file__).parent / "asserts"
+DEFAULT_VIDEO_DIR = Path(__file__).parent / "assets"
 MAX_STEPS = 3
 
 #: 视觉输入的 processor 输出键：transformers 5.22 里它们落入 shared_kwargs 会被
@@ -277,7 +281,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="水库游泳监测：Omni 视频理解 + 函数调用告警")
     parser.add_argument(
         "videos", nargs="*", type=Path,
-        help="监控视频路径，默认分析 asserts/ 下全部 mp4",
+        help="监控视频路径，默认分析 assets/ 下全部 mp4",
     )
     args = parser.parse_args()
     videos = args.videos or sorted(DEFAULT_VIDEO_DIR.glob("*.mp4"))

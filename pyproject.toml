@@ -6,14 +6,32 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "accelerate>=1.15.0",
+    "audioread>=3.1.0",
+    "av>=19.0.2",
+    "librosa>=1.0.1",
     "numpy>=2.5.4",
     "pillow>=13.0.0",
     "pyyaml>=6.0.3",
+    "qwen-omni-utils>=0.0.9",
     "safetensors>=0.8.0",
     "sentencepiece>=0.2.2",
     "soundfile>=0.14.0",
-    "torch>=2.15.0",
-    "torchvision>=0.29.2",
+    # 本机驱动 570.x 最高支持 CUDA 12.8，而 torch 2.12+ 只发布 cu13 wheel，
+    # 故 pin 在 cu128 源上可用的最后一个版本组合（torchcodec 0.11 ↔ torch 2.11）
+    "torch>=2.11.0,<2.12",
+    "torchcodec>=0.11.1,<0.12",
+    "torchvision>=0.26.0,<0.27",
     "tqdm>=4.70.1",
     "transformers>=5.22.1",
 ]
+
+# torch/torchvision/torchcodec 从 PyTorch 官方 cu128 源拉取（PyPI 默认 wheel 是 cu13）
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu128" }
+torchcodec = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }

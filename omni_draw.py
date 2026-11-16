@@ -2,7 +2,13 @@ from pathlib import Path
 
 import soundfile as sf
 
-from transformers import Qwen2_5OmniForConditionalGeneration, Qwen2_5OmniProcessor
+import torch
+
+import omni_compat
+
+omni_compat.patch_torchcodec()  # 本机 torchcodec 需要 LAZY 预加载垫片，见模块注释
+from qwen_omni_utils import process_mm_info  # noqa: E402
+from transformers import Qwen2_5OmniForConditionalGeneration, Qwen2_5OmniProcessor  # noqa: E402
 
 model = Qwen2_5OmniForConditionalGeneration.from_pretrained("/data/models/Qwen2.5-Omni-3B", torch_dtype="auto", device_map="auto")
 
